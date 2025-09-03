@@ -5,7 +5,6 @@ import requests
 import uuid
 from pathlib import Path
 import re
-import os
 
 router = Router()
 
@@ -23,7 +22,6 @@ async def ask_pinterest_link(callback: CallbackQuery):
 
 
 async def extract_video_url(page_url: str) -> str:
-    """Парсинг страницы Pinterest для получения mp4"""
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
     }
@@ -37,7 +35,7 @@ async def extract_video_url(page_url: str) -> str:
 
     html_content = response.text
 
-    # Ищем mp4 ссылку
+
     patterns = [
         r'"videos":\s*{.*?"url"\s*:\s*"(https?://[^"]+\.mp4[^"]*)"',
         r'<meta property="og:video" content="(https?://[^"]+\.mp4[^"]*)"',
@@ -55,18 +53,15 @@ async def extract_video_url(page_url: str) -> str:
 
 
 async def send_pinterest_video(message: Message, page_url: str):
-    """Отправка видео: сначала пробуем прямую ссылку, потом fallback через скачивание"""
     try:
         video_url = await extract_video_url(page_url)
 
-        # Прямая загрузка
         try:
             await message.answer_video(video=video_url, caption="📌 Видео с Pinterest")
             return
         except Exception as e:
             print(f"⚠️ Прямая загрузка не сработала: {e}, качаю файл...")
 
-        # Скачивание и отправка файла
         temp_dir = Path("pinterest_videos")
         temp_dir.mkdir(exist_ok=True)
         filepath = temp_dir / f"pinterest_{uuid.uuid4().hex}.mp4"
@@ -109,7 +104,6 @@ async def handle_pinit_link(message: Message):
     processing_msg = await message.answer("🔍 Распознаю короткую ссылку...")
 
     try:
-        # Получаем финальный URL после редиректа
         response = await asyncio.to_thread(
             lambda: requests.head(short_url, allow_redirects=True, timeout=10)
         )

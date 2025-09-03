@@ -1,10 +1,9 @@
 import asyncio
 import dotenv
 import os
-from aiogram import Bot, Dispatcher
 
-from handlers import router as handlers_router
-from pinterest import router as pinterest_router
+from aiogram import Bot, Dispatcher
+from handler import router, pinterest_router, handlers_router
 
 dotenv.load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
