@@ -1,3 +1,5 @@
 aiogram
 python-dotenv
 requests
+instaloader
+yt-dlp

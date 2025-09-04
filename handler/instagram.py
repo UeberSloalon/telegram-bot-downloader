@@ -29,7 +29,7 @@ async def handle_instagram(message: Message):
         await message.answer("Не удалось распознать ссылку")
         return
 
-    status_message = await message.answer("Идет скачивание")
+    status_message = await message.answer("Скачиваю Instagram видео...")
 
     try:
         post = instaloader.Post.from_shortcode(L.context, shortcode)

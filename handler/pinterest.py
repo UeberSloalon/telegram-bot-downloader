@@ -113,7 +113,7 @@ async def handle_pinit_link(message: Message):
             await processing_msg.edit_text("❌ Это не ссылка на Pinterest pin!")
             return
 
-        await processing_msg.edit_text("⏳ Скачиваю видео...")
+        await processing_msg.edit_text("Скачиваю Pinterest видео...")
         await send_pinterest_video(message, final_url)
         await processing_msg.delete()
 
