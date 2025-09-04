@@ -7,7 +7,7 @@ router = Router()
 
 @router.message(CommandStart())
 async def start_bot(message: Message):
-    await message.answer("пришлите ссылку")
+    await message.answer("Пришлите ссылку")
 
 
 
