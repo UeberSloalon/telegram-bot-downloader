@@ -3,10 +3,17 @@ import yt_dlp
 from aiogram import Router, F
 from aiogram.types import Message, FSInputFile
 
+from handler.subscriptions import check_subscription, ask_to_subscribe
+
 router = Router()
 
 @router.message(F.text.regexp(r"(https?://)?(www\.)?(tiktok\.com|vm\.tiktok\.com)/"))
 async def download_tiktok(message: Message):
+    user_id = message.from_user.id
+
+    if not await check_subscription(message.bot, user_id):
+        await ask_to_subscribe(message)
+        return
     url = message.text.strip()
     await message.answer("Скачиваю видео с TikTok...")
 
